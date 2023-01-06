@@ -1,3 +1,4 @@
+//run this as node xxx.js 1
 const config = require('config')
 const Queue = require('better-queue')
 
@@ -14,13 +15,9 @@ if (process.argv[2]){
     tileList = config.get('tileListE').concat(config.get('tileList1')).concat(config.get('tileList2')).concat(config.get('tileList3'))
 }
 
-/*
-console.log(tileList)
-for (let moduleKey of tileList){
-    console.log(moduleKey)
+const shutdown = () =>{
+  console.log('System shutdown. Thank you (^o^)/')
 }
-*/
-
 
 const q = new Queue(function (input,cb) {
     console.log(`${input}: started!`)
@@ -29,6 +26,17 @@ const q = new Queue(function (input,cb) {
         cb()
     },2000)
 },{concurrent:3, maxRetries:2,retryDelay:1000})
+
+q.on('task_finish',(result)=>{
+  console.log(`${result}: end successfully)`)
+})
+q.on('task_failed', (err) =>{
+  console.log(err)
+})
+q.on('drain',()=>{
+  console.log('Queue drains.')
+  shutdown()
+})
 
 for (let key of tileList){
     //console.log(key)
