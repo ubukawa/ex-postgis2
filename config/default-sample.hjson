@@ -1,0 +1,21 @@
+{
+    relations: [
+        data_base::schema::viewOrTable1
+        data_base::schema::viewOrTable2
+    ]
+    connection:{
+        db1:{
+            host: localhost
+            port: 5432
+            dbUser: user1
+            dbPassword: password
+        }
+        db2:{
+            host: localhost
+            port: 5432
+            dbUser: user1
+            dbPassword: password
+        }        
+    }
+    fetchSize: 30000
+}
