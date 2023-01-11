@@ -27,8 +27,8 @@ const sleep = (wait) => {
     })
 }
 
-const postGISaccess = async (key, relation) =>{
-//const postGISaccess = async (key, relation, downstream) =>{
+//const postGISaccess = async (key, relation) =>{
+const postGISaccess = async (key, relation, downstream) =>{
     return new Promise((resolve,reject) => {
         const statrTime = new Date()
         const [database, schema, view] = relation.split('::')
@@ -77,7 +77,7 @@ const shutdown = () =>{
   console.log(`---------------\nSystem shutdown at ${iso()}. \nThank you (^o^)/\n---------------`)
 }
 
-const q = new Queue(function (input,cb) {
+const q = new Queue(async (input,cb) => {
     console.log(`${input}: started!`)
     const startTime = iso()
     const [z, x, y] = input.split('-').map(v => Number(v))
@@ -85,8 +85,8 @@ const q = new Queue(function (input,cb) {
 
     for (relation of relations){
         while (!isIdle()){
-            //await sleep(5000)
-            sleep(5000)
+            await sleep(5000)
+            //sleep(5000)
         } try {
             await postGISaccess(input, relation) //input is the key
             //postGISaccess(input, relation)
